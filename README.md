@@ -1,75 +1,58 @@
 # Rimu Markup for V
 
-_rimu-v_ is a port of the [Rimu Markup
-language](https://github.com/srackham/rimu) written in the [V programming language](https://vlang.io/).
-
+_v-rimu_ is a port of the [Rimu Markup language](https://github.com/srackham/rimu) written in the [V programming language](https://vlang.io/).
 
 ## Features
-Functionally identical to the [JavaScript
-impementation](https://github.com/srackham/rimu) version 11.4.
-the following exceptions:
+Functionally identical to the [Rimu TypeScript implementation](https://github.com/srackham/rimu) version 11.4.
 
+## Implementation
+This implementation is a verbatim port of the canonical [TypeScript code](https://github.com/srackham/rimu).
+
+## Learn more
+See the [Rimu documentation](https://srackham.github.io/rimu/reference.html).
 
 ## Installation
-Download, build, test and install (requires V 0.3.2 or better):
 
-    git clone https://github.com/srackham/rimu-v.git
-    cd rimu-v
-    make
+    v install srackham.rimu
 
+Test the installation by running:
 
-## Using the rimu-v library
+    v -enable-globals test $HOME/.vmodules/srackham/rimu
+
+<!-- TODO Example installation and test workflows for Ubuntu, macOS and Windows can be found in the Github Actions [workflow file](https://github.com/srackham/v-rimu/blob/master/.github/workflows/ci.yml). -->
+
+## Using the v-rimu library
 Example usage:
 
-TODO FROM HERE
 ``` v
-package main
+module main
 
-import (
-    "fmt"
+import srackham.rimu
 
-    "github.com/srackham/rimu-v/v11/rimu"
-)
-
-func main() {
-    // Prints "<p><em>Hello Rimu</em>!</p>"
-    fmt.Println(rimu.Render("*Hello Rimu*!", rimu.RenderOptions{}))
+fn main() {
+	println(rimu.render('*Hello Rimu*!', rimu.RenderOptions{}))
 }
 ```
 To compile and run this simple application:
 
-1. Copy the code above to a file named `hello-rimu.go` and put it in an empty
-   directory.
-2.  Change to the directory and run the following Go commands:
+1. Copy the code above to a file named `hello-rimu.v`
+2. Run it directly:
 
-        go mod init example.com/hello-rimu
-        go mod tidy
-        go run hello-rimu.go
+        v -enable-globals run hello-rimu.v
 
-See also Rimu
-[API documentation](https://srackham.github.io/rimu/reference.html#api).
+3. Compile it to an executable and run it:
+
+        v -enable-globals -o hello hello-rimu.v
+        ./hello
+
+See also the [Rimu API documentation](https://srackham.github.io/rimu/reference.html#api).
 
 
 ## Rimu CLI command
-The [Rimu CLI command](https://srackham.github.io/rimu/reference.html#rimuc-command) is named
-`rimugo`.
+The V port of the [Rimu CLI command](https://srackham.github.io/rimu/reference.html#rimuc-command) is `rimuv`.
 
+To compile the `rimuv` executable and run it:
 
-## Learn more
-Read the [documentation](https://srackham.github.io/rimu/reference.html) and
-experiment with Rimu in the [Rimu
-Playground](http://srackham.github.io/rimu/rimuplayground.html).
-
-See the Rimu [Change
-Log](http://srackham.github.io/rimu/changelog.html) for the latest
-changes.
-
-
-## Implementation
-- The largely one-to-one correspondence between the canonical
-  [TypeScript code](https://github.com/srackham/rimu) and the Go code
-  eased porting and debugging.  This will also make it easier to
-  cross-port new features and bug-fixes.
-
-- All Rimu implementations share the same JSON driven test suites
-  comprising over 300 compatibility checks.
+    cd $HOME/.vmodules/srackham/rimu
+    v -enable-globals -o /tmp/rimuv rimuv/rimuv.v
+    /tmp/rimuv --help
