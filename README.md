@@ -12,6 +12,7 @@ This implementation is a verbatim port of the canonical [TypeScript code](https:
 See the [Rimu documentation](https://srackham.github.io/rimu/reference.html).
 
 ## Installation
+The following V command installs the Rimu module and its dependencies:
 
     v install srackham.rimu
 
@@ -47,8 +48,12 @@ See also the [Rimu API documentation](https://srackham.github.io/rimu/reference.
 ## Rimu CLI command
 The V port of the [Rimu CLI command](https://srackham.github.io/rimu/reference.html#rimuc-command) is `rimuv`.
 
-To compile the `rimuv` executable and run it:
+To build the `rimuv` executable:
 
-    cd $HOME/.vmodules/srackham/rimu
-    v -enable-globals -o /tmp/rimuv rimuv/rimuv.v
-    /tmp/rimuv --help
+    git clone https://github.com/srackham/v-rimu
+    cd v-rimu
+    make build-rimuv
+
+Execute `rimuv`, for example:
+
+    ./bin/rimuv --help
