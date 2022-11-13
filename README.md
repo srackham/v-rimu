@@ -50,6 +50,7 @@ The V port of the [Rimu CLI command](https://srackham.github.io/rimu/reference.h
 
 To build the `rimuv` executable:
 
+    v install srackham.rimu
     git clone https://github.com/srackham/v-rimu
     cd v-rimu
     make build-rimuv
