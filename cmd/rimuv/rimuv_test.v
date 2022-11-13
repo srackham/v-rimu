@@ -19,11 +19,11 @@ mut:
 // args: rimuc command args.
 // input: stdin input string.
 fn exec_rimuv(args string, input string) os.Result {
-	temp_file := './testdata/temp.txt'
+	temp_file := os.from_slash('./testdata/temp.txt')
 	os.write_file(temp_file, input) or { panic(err) }
 	mut cmd := ''
 	$if windows {
-		cmd = 'type $temp_file | bin/rimuv --no-rimurc $args'
+		cmd = 'type $temp_file | bin\\rimuv.exe --no-rimurc $args'
 	} $else {
 		cmd = 'cat $temp_file | bin/rimuv --no-rimurc $args'
 	}
