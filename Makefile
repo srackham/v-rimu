@@ -17,9 +17,9 @@ fmt:
 
 build-rimuv:
 	mkdir -p bin
-	v -cstrict -enable-globals -o bin/rimuv rimuv/rimuv.v
+	v -cstrict -enable-globals -o bin/rimuv cmd/rimuv/rimuv.v
 
 build-rimuv-optimized:
 	mkdir -p bin
 	# Cannot use -cstrict flag for GCC production builds (see https://github.com/vlang/v/issues/16016)
-	v -enable-globals -prod -o bin/rimuv -prod rimuv/rimuv.v
+	v -enable-globals -prod -o bin/rimuv -prod cmd/rimuv/rimuv.v
