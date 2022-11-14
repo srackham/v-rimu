@@ -77,6 +77,7 @@ fn test_rimuv() {
 		if tc.unsupported.contains('go') {
 			continue
 		}
+		dump(tc)
 		for layout in ['', 'classic', 'flex', 'sequel'] {
 			// Skip if not a layouts test and we have a layout, or if it is a layouts test but no layout is specified.
 			if (!tc.layouts && layout != '') || (tc.layouts && layout == '') {
@@ -89,6 +90,7 @@ fn test_rimuv() {
 				tc.args = ' --layout $layout $tc.args'
 			}
 			res := exec_rimuv(tc.args, tc.input)
+			dump(res)
 			assert res.exit_code == tc.exit_code
 			match tc.predicate {
 				'equals' {
