@@ -23,11 +23,8 @@ fn exec_rimuv(args string, input string) os.Result {
 	cmd_input := os.from_slash('./testdata/temp.txt')
 	os.write_file(cmd_input, input) or { panic(err) }
 	$if windows {
-		// Create and execute Windows .bat file.
 		cmd := 'type $cmd_input | bin\\rimuv.exe --no-rimurc $args'
-		cmd_bat := '.\\testdata\\temp.bat'
-		os.write_file(cmd_bat, '$cmd') or { panic(err) }
-		res := os.execute('cmd.exe /Q /C $cmd_bat')
+		res := os.execute('cmd.exe /Q /C "$cmd"')
 		return os.Result{res.exit_code, str.normalize_newlines(res.output)}
 	} $else {
 		cmd := 'cat $cmd_input | bin/rimuv --no-rimurc $args'
@@ -90,21 +87,22 @@ fn test_rimuv() {
 			}
 			res := exec_rimuv(tc.args, tc.input)
 			assert res.exit_code == tc.exit_code, 'description: $tc.description\nexpected: $tc.exit_code\ngot: $res.exit_code'
+			msg := 'description: $tc.description\nexpected: ${str.literal(tc.expected_output)}\ngot: ${str.literal(res.output)}'
 			match tc.predicate {
 				'equals' {
-					assert res.output == tc.expected_output, 'description: $tc.description\nexpected: $tc.expected_output\ngot: $res.output'
+					assert res.output == tc.expected_output, msg
 				}
 				'!equals' {
-					assert res.output != tc.expected_output, 'description: $tc.description\nexpected: $tc.expected_output\ngot: $res.output'
+					assert res.output != tc.expected_output, msg
 				}
 				'contains' {
-					assert res.output.contains(tc.expected_output), 'description: $tc.description\nexpected: $tc.expected_output\ngot: $res.output'
+					assert res.output.contains(tc.expected_output), msg
 				}
 				'!contains' {
-					assert !res.output.contains(tc.expected_output), 'description: $tc.description\nexpected: $tc.expected_output\ngot: $res.output'
+					assert !res.output.contains(tc.expected_output), msg
 				}
 				'startsWith' {
-					assert res.output.starts_with(tc.expected_output), 'description: $tc.description\nexpected: $tc.expected_output\ngot: $res.output'
+					assert res.output.starts_with(tc.expected_output), msg
 				}
 				else {
 					panic(tc.description + ': illegal predicate: ' + tc.predicate)

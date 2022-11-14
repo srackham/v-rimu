@@ -4,6 +4,13 @@ fn normalize_newlines(s string) string {
 	return s.replace('\r\n', '\n').replace('\r', '\n')
 }
 
+fn literal(s string) string {
+	return s
+		.replace('\r', '\\r')
+		.replace('\n', '\\n')
+		.replace('\t', '\\t')
+}
+
 pub fn replace_special_chars(s string) string {
 	return s.replace('&', '&amp;').replace('>', '&gt;').replace('<', '&lt;')
 }
