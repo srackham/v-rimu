@@ -361,7 +361,7 @@ fn class_injection_filter(mat []string, mut def Definition) string {
 // contentFilter for multi-line macro definitions.
 fn macro_def_content_filter(text string, matches []string, opts expansion.Options) string {
 	quote := rune(matches[0][matches[0].len - matches[1].len - 1]).str() // The lead macro value quote character.
-	name := (pcre2.must_compile(r'^{([\w\-]+\??)}').find_one_submatch(matches[0]) or { [] })[1] // Extract macro name from opening delimiter.
+	name := (pcre2.must_compile(r'^{([\w\-]+\x3f?)}').find_one_submatch(matches[0]) or { [] })[1] // Extract macro name from opening delimiter.
 	mut txt := text
 	txt = pcre2.must_compile(r'(' + quote + r') *\\\n').replace_all(txt, '$1\n') // Unescape line-continuations.
 	txt = pcre2.must_compile(r'(' + quote + r' *[\\]+)\\\n').replace_all(txt, '$1\n') // Unescape escaped line-continuations.

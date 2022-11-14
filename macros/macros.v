@@ -11,10 +11,10 @@ pub const (
 	line_def             = pcre2.must_compile(r'^\\?{([\w\-]+\x3f?)}\s*=\s*' + "(['`])" + '(.*)' +
 		"(['`])" + '$')
 	// Match multi-line macro definition literal value open delimiter. $1 is first line of macro.
-	literal_def_open     = pcre2.must_compile(r'^\\?{[\w\-]+\??}\s*=\s*\x27(.*)$')
+	literal_def_open     = pcre2.must_compile(r'^\\?{[\w\-]+\x3f?}\s*=\s*\x27(.*)$')
 	literal_def_close    = pcre2.must_compile(r'^(.*)\x27$')
 	// Match multi-line macro definition expression value open delimiter. $1 is first line of macro.
-	expression_def_open  = pcre2.must_compile(r'^\\?{[\w\-]+\??}\s*=\s*' + '`' + '(.*)$')
+	expression_def_open  = pcre2.must_compile(r'^\\?{[\w\-]+\x3f?}\s*=\s*' + '`' + '(.*)$')
 	expression_def_close = pcre2.must_compile(r'^(.*)`$')
 )
 
