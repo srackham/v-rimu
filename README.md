@@ -16,7 +16,7 @@ The following V command installs the Rimu module and its dependencies:
 
     v install srackham.rimu
 
-<!-- TODO Example installation and test workflows for Ubuntu, macOS and Windows can be found in the Github Actions [workflow file](https://github.com/srackham/v-rimu/blob/master/.github/workflows/ci.yml). -->
+Example installation and test workflows for Ubuntu, macOS and Windows can be found in the Github Actions [workflow file](https://github.com/srackham/v-rimu/blob/master/.github/workflows/ci.yml).
 
 ## Using the v-rimu library
 Example usage:
