@@ -1,11 +1,11 @@
 module str
 
+fn normalize_newlines(s string) string {
+	return s.replace('\r\n', '\n').replace('\r', '\n')
+}
+
 pub fn replace_special_chars(s string) string {
-	mut result := ''
-	result = s.replace('&', '&amp;')
-	result = result.replace('>', '&gt;')
-	result = result.replace('<', '&lt;')
-	return result
+	return s.replace('&', '&amp;').replace('>', '&gt;').replace('<', '&lt;')
 }
 
 // parse_bool returns the boolean value represented by the string.

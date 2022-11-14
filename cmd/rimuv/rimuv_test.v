@@ -2,6 +2,7 @@ module main
 
 import json
 import os
+import str
 
 struct RimuvTest {
 mut:
@@ -19,16 +20,19 @@ mut:
 // args: rimuc command args.
 // input: stdin input string.
 fn exec_rimuv(args string, input string) os.Result {
-	temp_file := os.from_slash('./testdata/temp.txt')
-	os.write_file(temp_file, input) or { panic(err) }
-	mut cmd := ''
+	cmd_input := os.from_slash('./testdata/temp.txt')
+	os.write_file(cmd_input, input) or { panic(err) }
 	$if windows {
-		cmd = 'type $temp_file | bin\\rimuv.exe --no-rimurc $args'
+		// Create and execute Windows .bat file.
+		cmd := 'type $cmd_input | bin\\rimuv.exe --no-rimurc $args'
+		cmd_bat := '.\\testdata\\temp.bat'
+		os.write_file(cmd_bat, '@$cmd') or { panic(err) }
+		res := os.execute(cmd_bat)
+		return os.Result{res.exit_code, str.normalize_newlines(res.output)}
 	} $else {
-		cmd = 'cat $temp_file | bin/rimuv --no-rimurc $args'
+		cmd := 'cat $cmd_input | bin/rimuv --no-rimurc $args'
+		return os.execute(cmd)
 	}
-	dump(cmd)
-	return os.execute(cmd)
 }
 
 fn read_resource_test() {
@@ -73,7 +77,6 @@ fn test_rimuv() {
 		if tc.unsupported.contains('go') {
 			continue
 		}
-		dump(tc)
 		for layout in ['', 'classic', 'flex', 'sequel'] {
 			// Skip if not a layouts test and we have a layout, or if it is a layouts test but no layout is specified.
 			if (!tc.layouts && layout != '') || (tc.layouts && layout == '') {
