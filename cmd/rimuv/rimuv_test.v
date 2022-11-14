@@ -77,7 +77,6 @@ fn test_rimuv() {
 		if tc.unsupported.contains('go') {
 			continue
 		}
-		dump(tc)
 		for layout in ['', 'classic', 'flex', 'sequel'] {
 			// Skip if not a layouts test and we have a layout, or if it is a layouts test but no layout is specified.
 			if (!tc.layouts && layout != '') || (tc.layouts && layout == '') {
@@ -90,23 +89,22 @@ fn test_rimuv() {
 				tc.args = ' --layout $layout $tc.args'
 			}
 			res := exec_rimuv(tc.args, tc.input)
-			dump(res)
-			assert res.exit_code == tc.exit_code
+			assert res.exit_code == tc.exit_code, 'desciption: $tc.description\nexpected: $tc.exit_code\ngot: $res.exit_code'
 			match tc.predicate {
 				'equals' {
-					assert res.output == tc.expected_output
+					assert res.output == tc.expected_output, 'desciption: $tc.description\nexpected: $tc.expected_output\ngot: $res.output'
 				}
 				'!equals' {
-					assert res.output != tc.expected_output
+					assert res.output != tc.expected_output, 'desciption: $tc.description\nexpected: $tc.expected_output\ngot: $res.output'
 				}
 				'contains' {
-					assert res.output.contains(tc.expected_output)
+					assert res.output.contains(tc.expected_output), 'desciption: $tc.description\nexpected: $tc.expected_output\ngot: $res.output'
 				}
 				'!contains' {
-					assert !res.output.contains(tc.expected_output)
+					assert !res.output.contains(tc.expected_output), 'desciption: $tc.description\nexpected: $tc.expected_output\ngot: $res.output'
 				}
 				'startsWith' {
-					assert res.output.starts_with(tc.expected_output)
+					assert res.output.starts_with(tc.expected_output), 'desciption: $tc.description\nexpected: $tc.expected_output\ngot: $res.output'
 				}
 				else {
 					panic(tc.description + ': illegal predicate: ' + tc.predicate)

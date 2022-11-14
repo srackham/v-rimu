@@ -61,11 +61,11 @@ pub fn test_render() {
 			}
 		}
 		mut got := render(tc.input, opts)
-		assert got == tc.expected, '$tc.description\n$tc.input'
+		assert got == tc.expected, 'description: $tc.description\nexpected: $tc.expected\ngot: $got'
 		if tc.callback != '' {
 			assert msg.trim_space() == tc.callback
 		} else if msg != '' {
-			assert false, 'unexpected callback: $msg'
+			assert false, '$tc.description: unexpected callback: $msg'
 		}
 	}
 }
