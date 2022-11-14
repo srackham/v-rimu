@@ -73,10 +73,17 @@ jobs:
         run: |
           .\v\v.exe install srackham.rimu
 
-      - name: Install rimu repo and run tests
+      - name: Clone rimu repo
         run: |
           git clone https://github.com/srackham/v-rimu
+
+      - name: Create rimuv executable
+        run: |
           cd v-rimu
           mkdir bin
           ..\v\v.exe -enable-globals -o bin/rimuv.exe cmd/rimuv/rimuv.v
+
+      - name: Run tests
+        run: |
+          cd v-rimu
           ..\v\v.exe -enable-globals test .
