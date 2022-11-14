@@ -1,5 +1,6 @@
 module str
 
+// `normalize_newlines` translates `\r` newline sequences to `\n`.
 fn normalize_newlines(s string) string {
 	return s
 		.replace('\r\n', '\n')
@@ -7,6 +8,7 @@ fn normalize_newlines(s string) string {
 		.replace('\r', '\n')
 }
 
+// `to_literal` translates white space characters to escape sequences.
 fn to_literal(s string) string {
 	return s
 		.replace('\r', '\\r')
@@ -14,8 +16,12 @@ fn to_literal(s string) string {
 		.replace('\t', '\\t')
 }
 
+// `replace_special_chars` translates HTML special characters to character entities.
 pub fn replace_special_chars(s string) string {
-	return s.replace('&', '&amp;').replace('>', '&gt;').replace('<', '&lt;')
+	return s
+		.replace('&', '&amp;')
+		.replace('>', '&gt;')
+		.replace('<', '&lt;')
 }
 
 // parse_bool returns the boolean value represented by the string.
