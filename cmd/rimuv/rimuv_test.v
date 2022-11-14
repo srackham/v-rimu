@@ -87,7 +87,7 @@ fn test_rimuv() {
 			}
 			res := exec_rimuv(tc.args, tc.input)
 			assert res.exit_code == tc.exit_code, 'description: $tc.description\nexpected: $tc.exit_code\ngot: $res.exit_code'
-			msg := 'description: $tc.description\nexpected: ${str.literal(tc.expected_output)}\ngot: ${str.literal(res.output)}'
+			msg := 'description: $tc.description\nexpected: ${str.to_literal(tc.expected_output)}\ngot: ${str.to_literal(res.output)}'
 			match tc.predicate {
 				'equals' {
 					assert res.output == tc.expected_output, msg
