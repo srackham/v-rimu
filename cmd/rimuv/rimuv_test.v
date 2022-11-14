@@ -26,8 +26,8 @@ fn exec_rimuv(args string, input string) os.Result {
 		// Create and execute Windows .bat file.
 		cmd := 'type $cmd_input | bin\\rimuv.exe --no-rimurc $args'
 		cmd_bat := '.\\testdata\\temp.bat'
-		os.write_file(cmd_bat, '@$cmd') or { panic(err) }
-		res := os.execute(cmd_bat)
+		os.write_file(cmd_bat, '$cmd') or { panic(err) }
+		res := os.execute('cmd.exe /Q /C $cmd_bat')
 		return os.Result{res.exit_code, str.normalize_newlines(res.output)}
 	} $else {
 		cmd := 'cat $cmd_input | bin/rimuv --no-rimurc $args'
@@ -89,22 +89,22 @@ fn test_rimuv() {
 				tc.args = ' --layout $layout $tc.args'
 			}
 			res := exec_rimuv(tc.args, tc.input)
-			assert res.exit_code == tc.exit_code, 'desciption: $tc.description\nexpected: $tc.exit_code\ngot: $res.exit_code'
+			assert res.exit_code == tc.exit_code, 'description: $tc.description\nexpected: $tc.exit_code\ngot: $res.exit_code'
 			match tc.predicate {
 				'equals' {
-					assert res.output == tc.expected_output, 'desciption: $tc.description\nexpected: $tc.expected_output\ngot: $res.output'
+					assert res.output == tc.expected_output, 'description: $tc.description\nexpected: $tc.expected_output\ngot: $res.output'
 				}
 				'!equals' {
-					assert res.output != tc.expected_output, 'desciption: $tc.description\nexpected: $tc.expected_output\ngot: $res.output'
+					assert res.output != tc.expected_output, 'description: $tc.description\nexpected: $tc.expected_output\ngot: $res.output'
 				}
 				'contains' {
-					assert res.output.contains(tc.expected_output), 'desciption: $tc.description\nexpected: $tc.expected_output\ngot: $res.output'
+					assert res.output.contains(tc.expected_output), 'description: $tc.description\nexpected: $tc.expected_output\ngot: $res.output'
 				}
 				'!contains' {
-					assert !res.output.contains(tc.expected_output), 'desciption: $tc.description\nexpected: $tc.expected_output\ngot: $res.output'
+					assert !res.output.contains(tc.expected_output), 'description: $tc.description\nexpected: $tc.expected_output\ngot: $res.output'
 				}
 				'startsWith' {
-					assert res.output.starts_with(tc.expected_output), 'desciption: $tc.description\nexpected: $tc.expected_output\ngot: $res.output'
+					assert res.output.starts_with(tc.expected_output), 'description: $tc.description\nexpected: $tc.expected_output\ngot: $res.output'
 				}
 				else {
 					panic(tc.description + ': illegal predicate: ' + tc.predicate)
