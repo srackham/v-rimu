@@ -8,7 +8,7 @@ pub const (
 	// Matches a line starting with a macro invocation. $1 = macro invocation.
 	match_line           = pcre2.must_compile(r'^({(?:[\w\-]+)(?:[!=|?](?:|.*?[^\\]))?}).*$')
 	// Match single-line macro definition. $1 = name, $2 = delimiter, $3 = value, $4 trailing delimiter.
-	line_def             = pcre2.must_compile(r'^\\?{([\w\-]+\??)}\s*=\s*' + "(['`])" + '(.*)' +
+	line_def             = pcre2.must_compile(r'^\\?{([\w\-]+\x3f?)}\s*=\s*' + "(['`])" + '(.*)' +
 		"(['`])" + '$')
 	// Match multi-line macro definition literal value open delimiter. $1 is first line of macro.
 	literal_def_open     = pcre2.must_compile(r'^\\?{[\w\-]+\??}\s*=\s*\x27(.*)$')
