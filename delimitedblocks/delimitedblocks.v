@@ -317,7 +317,7 @@ pub fn get_definition(name string) !&Definition {
 			return &delimitedblocks_defs[i]
 		}
 	}
-	return error('missing quote delimitedblock definition: $name')
+	return error('missing quote delimitedblock definition: ${name}')
 }
 
 // Update existing named definition.

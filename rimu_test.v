@@ -31,7 +31,7 @@ pub fn test_render() {
 		'htmlReplacement':  'html_replacement'
 	}
 	for k, v in field_map {
-		text = text.replace('"$k":', '"$v":')
+		text = text.replace('"${k}":', '"${v}":')
 	}
 	mut testcases := json.decode([]RenderTest, text)!
 	// Append test with invalid UTF-8 input because JSON does not support binary data (all strings are valid UTF-8)).
@@ -61,11 +61,11 @@ pub fn test_render() {
 			}
 		}
 		mut got := render(tc.input, opts)
-		assert got == tc.expected, 'description: $tc.description\nexpected: $tc.expected\ngot: $got'
+		assert got == tc.expected, 'description: ${tc.description}\nexpected: ${tc.expected}\ngot: ${got}'
 		if tc.callback != '' {
 			assert msg.trim_space() == tc.callback
 		} else if msg != '' {
-			assert false, '$tc.description: unexpected callback: $msg'
+			assert false, '${tc.description}: unexpected callback: ${msg}'
 		}
 	}
 }

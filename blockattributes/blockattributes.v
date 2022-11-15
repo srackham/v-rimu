@@ -158,10 +158,10 @@ pub fn slugify(text string) string {
 	}
 	if blockattributes_ids.contains(slug) { // Another element already has that id.
 		mut i := 2
-		for blockattributes_ids.contains('$slug-$i') {
+		for blockattributes_ids.contains('${slug}-${i}') {
 			i++
 		}
-		slug += '-$i'
+		slug += '-${i}'
 	}
 	return slug
 }

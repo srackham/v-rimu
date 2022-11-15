@@ -42,7 +42,7 @@ fn read_resource(name string) string {
 		'sequel-header.rmu' { $embed_file('./resources/sequel-header.rmu').to_string() }
 		'v8-footer.rmu' { $embed_file('./resources/v8-footer.rmu').to_string() }
 		'v8-header.rmu' { $embed_file('./resources/v8-header.rmu').to_string() }
-		else { panic('illegal resource name: $name') }
+		else { panic('illegal resource name: ${name}') }
 	}
 }
 
@@ -120,11 +120,11 @@ fn main() {
 			'--header-links' {
 				mut macro_value := ''
 				if '--lang|--title|--theme'.contains(arg) {
-					macro_value = shift(mut args, 'missing $arg value')
+					macro_value = shift(mut args, 'missing ${arg} value')
 				} else {
 					macro_value = 'true'
 				}
-				prepend += "{$arg}='$macro_value'\n"
+				prepend += "{${arg}}='${macro_value}'\n"
 			}
 			'--layout', '--styled-name' {
 				layout = shift(mut args, 'missing --layout value')
@@ -151,9 +151,9 @@ fn main() {
 	resource_tag := 'resource:'
 	prepend_opt := '--prepend options'
 	if layout != '' {
-		files.prepend('$resource_tag$layout-header.rmu')
+		files.prepend('${resource_tag}${layout}-header.rmu')
 		// files.push('$resource_tag$layout-footer.rmu')// TODO Compiler bug.
-		files << '$resource_tag$layout-footer.rmu'
+		files << '${resource_tag}${layout}-footer.rmu'
 	}
 	if !no_rimurc && os.exists(rimurc_path()) {
 		prepend_files.prepend(rimurc_path())
@@ -193,7 +193,7 @@ fn main() {
 			}
 			else {
 				if !os.exists(infile) {
-					die('source file does not exist: $infile')
+					die('source file does not exist: ${infile}')
 				}
 				source = os.read_file(infile) or { die(err.msg()) }
 				if prepend_files.contains(infile) {
@@ -212,7 +212,7 @@ fn main() {
 				if infile == stdin_name {
 					f = '/dev/stdin'
 				}
-				mut msg := '$message.kind: $f: $message.text'
+				mut msg := '${message.kind}: ${f}: ${message.text}'
 				if msg.len > 120 {
 					msg = msg[..117] + '...'
 				}

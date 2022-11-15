@@ -23,11 +23,11 @@ fn exec_rimuv(args string, input string) os.Result {
 	cmd_input := os.from_slash('./testdata/temp.txt')
 	os.write_file(cmd_input, input) or { panic(err) }
 	$if windows {
-		cmd := 'type $cmd_input | bin\\rimuv.exe --no-rimurc $args'
-		res := os.execute('cmd.exe /Q /C "$cmd"')
+		cmd := 'type ${cmd_input} | bin\\rimuv.exe --no-rimurc ${args}'
+		res := os.execute('cmd.exe /Q /C "${cmd}"')
 		return os.Result{res.exit_code, str.normalize_newlines(res.output)}
 	} $else {
-		cmd := 'cat $cmd_input | bin/rimuv --no-rimurc $args'
+		cmd := 'cat ${cmd_input} | bin/rimuv --no-rimurc ${args}'
 		return os.execute(cmd)
 	}
 }
@@ -35,8 +35,8 @@ fn exec_rimuv(args string, input string) os.Result {
 fn read_resource_test() {
 	// Throws exception if there is a missing resource file.
 	for style in ['classic', 'flex', 'plain', 'sequel', 'v8'] {
-		read_resource('$style-header.rmu')
-		read_resource('$style-footer.rmu')
+		read_resource('${style}-header.rmu')
+		read_resource('${style}-footer.rmu')
 	}
 	s := os.read_file('./resources/manpage.txt') or {
 		assert false, err.msg()
@@ -66,7 +66,7 @@ fn test_rimuv() {
 		'exitCode':       'exit_code'
 	}
 	for k, v in field_map {
-		text = text.replace('"$k":', '"$v":')
+		text = text.replace('"${k}":', '"${v}":')
 	}
 	mut testcases := json.decode([]RimuvTest, text)!
 
@@ -83,11 +83,11 @@ fn test_rimuv() {
 			tc.args = tc.args.replace('./test/fixtures/', './testdata/')
 			tc.args = tc.args.replace('./examples/example-rimurc.rmu', './testdata/example-rimurc.rmu')
 			if layout != '' {
-				tc.args = ' --layout $layout $tc.args'
+				tc.args = ' --layout ${layout} ${tc.args}'
 			}
 			res := exec_rimuv(tc.args, tc.input)
-			assert res.exit_code == tc.exit_code, 'description: $tc.description\nexpected: $tc.exit_code\ngot: $res.exit_code'
-			msg := 'description: $tc.description\nexpected: ${str.to_literal(tc.expected_output)}\ngot: ${str.to_literal(res.output)}'
+			assert res.exit_code == tc.exit_code, 'description: ${tc.description}\nexpected: ${tc.exit_code}\ngot: ${res.exit_code}'
+			msg := 'description: ${tc.description}\nexpected: ${str.to_literal(tc.expected_output)}\ngot: ${str.to_literal(res.output)}'
 			match tc.predicate {
 				'equals' {
 					assert res.output == tc.expected_output, msg

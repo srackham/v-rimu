@@ -70,14 +70,14 @@ pub fn update_options(opts RenderOptions) {
 	}
 	// Reset takes priority.
 	if opts.reset {
-		set_option('reset', '$opts.reset')
+		set_option('reset', '${opts.reset}')
 	}
 	// Install callback again in case it has been reset.
 	if opts.callback != options.nil_callback {
 		callback = opts.callback
 	}
 	if opts.safe_mode != options.nil_safe_mode {
-		set_option('safeMode', '$opts.safe_mode')
+		set_option('safeMode', '${opts.safe_mode}')
 	}
 	if opts.html_replacement != options.nil_html_replacement {
 		set_option('htmlReplacement', opts.html_replacement)
