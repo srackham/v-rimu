@@ -13,7 +13,7 @@ pub fn test_render() {
 		"|code|='<code>|</code>'": ''
 		"^='<sup>|</sup>'":        ''
 		"/\\.{3}/i = '&hellip;'":  ''
-		"\{foo}='bar'":            ''
+		"{foo}='bar'":             ''
 	}
 	for k, v in testcases {
 		mut reader := iotext.new_reader(k)

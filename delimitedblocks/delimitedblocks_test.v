@@ -11,9 +11,9 @@ pub fn test_init() {
 
 pub fn test_render() {
 	testcases := {
-		'foo':                            '<p>foo</p>'
-		'  foo':                          '<pre><code>foo</code></pre>'
-		"\{v}='foo' \\\nfoo' \\\\\nbar'": ''
+		'foo':                           '<p>foo</p>'
+		'  foo':                         '<pre><code>foo</code></pre>'
+		"{v}='foo' \\\nfoo' \\\\\nbar'": ''
 	}
 	init()
 	for k, v in testcases {
