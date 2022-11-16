@@ -1,4 +1,4 @@
-module api
+module document
 
 pub fn test_init() {
 	init()

@@ -8,7 +8,7 @@ import macros
 import options
 import spans
 
-__global api_render = fn (source string) string {
+__global doc_render = fn (source string) string {
 	return ''
 }
 
@@ -285,7 +285,7 @@ pub fn render(mut reader iotext.Reader, mut writer iotext.Writer, allowed []stri
 				}
 				if opts.container {
 					blockattributes_attrs.options.container = false // Consume before recursing.
-					text = api_render(text)
+					text = doc_render(text)
 				} else {
 					text = spans.replace_inline(text, opts)
 				}

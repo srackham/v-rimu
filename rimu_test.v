@@ -3,7 +3,7 @@ module rimu
 import json
 import v.util
 
-struct ApiOptions {
+struct DocOptions {
 mut:
 	safe_mode        int
 	html_replacement string
@@ -16,7 +16,7 @@ mut:
 	input       string
 	expected    string
 	callback    string
-	options     ApiOptions
+	options     DocOptions
 	unsupported string
 }
 
@@ -40,7 +40,7 @@ pub fn test_render() {
 		input: '\xbb'
 		expected: ''
 		callback: 'error: invalid UTF-8 input'
-		options: ApiOptions{
+		options: DocOptions{
 			reset: true
 		}
 	}

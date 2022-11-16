@@ -1,6 +1,6 @@
 module rimu
 
-import api
+import document
 import options
 
 // CallbackFunction is the API callback function type.
@@ -15,5 +15,5 @@ pub type RenderOptions = options.RenderOptions
 // Render is public API to translate Rimu Markup to HTML.
 pub fn render(text string, opts RenderOptions) string {
 	options.update_options(opts)
-	return api.render(text)
+	return document.render(text)
 }

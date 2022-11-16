@@ -1,4 +1,4 @@
-module api
+module document
 
 import blockattributes
 import delimitedblocks
@@ -10,10 +10,10 @@ import options
 import quotes
 import replacements
 
-// Dependency injectiion so we can use api functions in imported packages without incuring import cycle errors.
+// Dependency injectiion so we can use document functions in imported packages without incuring import cycle errors.
 fn init() {
-	api_init = initialize
-	api_render = render
+	doc_init = initialize
+	doc_render = render
 }
 
 // Init initialises Rimu state.

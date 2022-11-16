@@ -4,7 +4,7 @@ import str
 
 // TODO implement as singleton.
 __global (
-	api_init         fn ()
+	doc_init         fn ()
 	safe_mode        int
 	html_replacement string
 	callback         CallbackFunction
@@ -102,7 +102,7 @@ pub fn set_option(name string, value string) {
 		'reset' {
 			if b := str.parse_bool(value) {
 				if b {
-					api_init()
+					doc_init()
 				}
 			} else {
 				error_callback('illegal reset API option value: ' + value)
