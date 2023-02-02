@@ -6,7 +6,7 @@ See https://discordapp.com/channels/592103645835821068/592294828432424960/934198
 */
 
 [unsafe]
-fn private_get<T>() &T {
+fn private_get[T]() &T {
 	mut static s := &T(0)
 	if u64(s) == 0 {
 		s = &T{}
@@ -14,6 +14,6 @@ fn private_get<T>() &T {
 	return s
 }
 
-pub fn get<T>() &T {
-	return unsafe { private_get<T>() }
+pub fn get[T]() &T {
+	return unsafe { private_get[T]() }
 }

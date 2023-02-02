@@ -11,7 +11,7 @@ mut:
 
 // context returns a ref to the Context singleton.
 pub fn context() &Context {
-	mut ctx := singleton.get<Context>()
+	mut ctx := singleton.get[Context]()
 	if !ctx.initialized {
 		ctx.val = 'default value'
 		ctx.initialized = true

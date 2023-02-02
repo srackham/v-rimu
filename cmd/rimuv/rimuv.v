@@ -51,7 +51,7 @@ fn import_layout_file(name string) string {
 	return ''
 }
 
-fn shift<T>(mut a []T, err_msg string) T {
+fn shift[T](mut a []T, err_msg string) T {
 	if a.len == 0 {
 		if err_msg == '' {
 			die('shift: array argument is empty')
