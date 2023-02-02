@@ -7,7 +7,7 @@ SHELL := bash
 .ONESHELL:
 .SILENT:
 
-.PHONY: fmt test build-rimuv build-rimuv-optimized
+.PHONY: fmt test build-rimuv build-rimuv-optimized tag push
 
 test: fmt build-rimuv
 	v -cstrict -enable-globals test .
@@ -23,3 +23,11 @@ build-rimuv-optimized:
 	mkdir -p bin
 	# Cannot use -cstrict flag for GCC production builds (see https://github.com/vlang/v/issues/16016)
 	v -enable-globals -prod -o bin/rimuv -prod cmd/rimuv/rimuv.v
+
+tag: test
+	tag=$(VERS)
+	echo tag: $$tag
+	git tag -a -m "$$tag" "$$tag"
+
+push: test
+	git push -u --tags origin master
