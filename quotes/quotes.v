@@ -101,7 +101,7 @@ pub fn get_definition(quote string) ?Definition {
 		}
 	}
 	// Should never arrive here.
-	return error('missing quote definition: ${quote}')
+	panic('missing quote definition: ${quote}')
 }
 
 // Update existing or add new quote definition.
