@@ -44,7 +44,7 @@ pub fn parse(text string) bool {
 		macros: true
 	})
 	// class names = $1, id = $2, css-properties = $3, html-attributes = $4, block-options = $5
-	mut m := pcre2.must_compile(r'^\\?\.((?:\s*[a-zA-Z][\w\-]*)+)*(?:\s*)?(#[a-zA-Z][\w\-]*\s*)?(?:\s*)?(?:"(.+?)")?(?:\s*)?(\[.+])?(?:\s*)?([+-][ \w+-]+)?$').find_one_submatch(txt) or {
+	mut m := pcre2.must_compile(r'^\\?\.((?:[a-zA-Z][\w-]*\s*)+)?(#[a-zA-Z][\w-]*)?(?:\s*"([^"]+?)")?(?:\s*\[([^\]]+)\])?(\s*[+-][\w\s+-]+)?$').find_one_submatch(txt) or {
 		return false
 	}
 	for i, v in m {
@@ -73,7 +73,7 @@ pub fn parse(text string) bool {
 			if blockattributes_attrs.attributes != '' {
 				blockattributes_attrs.attributes += ' '
 			}
-			blockattributes_attrs.attributes += m[4][1..m[4].len - 1].trim_space()
+			blockattributes_attrs.attributes += m[4]
 		}
 		if m[5] != '' {
 			blockattributes_attrs.options.merge(expansion.parse(m[5]))

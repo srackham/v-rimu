@@ -24,10 +24,6 @@ fn test_parse() {
 	assert !parse("htmlReplacement = 'Foo'")
 	assert !parse(".htmlReplac = 'Foo'")
 	assert !parse(r'.{macro}')
-	/*
-	This error looks like a PCRE2 bug as it's unlikely the match limit has been exceeded.
-	See https://stackoverflow.com/a/33928343/1136455
-	*/
 	assert !parse(".htmlReplacement = 'Foo'")
 }
 
