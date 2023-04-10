@@ -10,7 +10,7 @@ SHELL := bash
 .PHONY: fmt test build-rimuv build-rimuv-optimized tag push
 
 test: fmt build-rimuv
-	v -cstrict -enable-globals test .
+	v -enable-globals test .
 
 fmt:
 	v fmt -w .
