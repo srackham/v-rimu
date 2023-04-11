@@ -1,21 +1,21 @@
 module options
 
-pub fn test_init() {
-	init()
+pub fn test_initialize() {
+	initialize()
 	assert safe_mode == 0
 	assert '<mark>replaced HTML</mark>' == html_replacement
 	assert callback == unsafe { nil }
 }
 
 pub fn test_is_safe_mode_nz() {
-	init()
+	initialize()
 	assert !is_safe_mode_nz()
 	safe_mode = 1
 	assert is_safe_mode_nz()
 }
 
 pub fn test_skip_macro_defs() {
-	init()
+	initialize()
 	assert !skip_macro_defs()
 	safe_mode = 1
 	assert skip_macro_defs()
@@ -24,7 +24,7 @@ pub fn test_skip_macro_defs() {
 }
 
 pub fn test_skip_block_attributes() {
-	init()
+	initialize()
 	assert !skip_block_attributes()
 	safe_mode = 1
 	assert !skip_block_attributes()
@@ -33,7 +33,7 @@ pub fn test_skip_block_attributes() {
 }
 
 pub fn test_update_options() {
-	init()
+	initialize()
 	update_options(RenderOptions{
 		safe_mode: 1
 	})
@@ -47,7 +47,7 @@ pub fn test_update_options() {
 }
 
 pub fn test_set_option() {
-	init()
+	initialize()
 	set_option('safeMode', 'qux')
 	assert safe_mode == 0
 	set_option('safeMode', '42')
@@ -59,7 +59,7 @@ pub fn test_set_option() {
 }
 
 pub fn test_html_safe_mode_filter() {
-	init()
+	initialize()
 	assert html_safe_mode_filter('foo') == 'foo'
 	safe_mode = 1
 	assert html_safe_mode_filter('foo') == ''

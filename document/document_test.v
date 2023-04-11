@@ -1,7 +1,7 @@
 module document
 
-pub fn test_init() {
-	init()
+pub fn test_initialize() {
+	initialize()
 }
 
 pub fn test_render() {

@@ -3,8 +3,8 @@ module delimitedblocks
 import iotext
 import macros
 
-pub fn test_init() {
-	init()
+pub fn test_initialize() {
+	initialize()
 	assert default_defs.len == delimitedblocks_defs.len
 	assert default_defs == delimitedblocks_defs
 }
@@ -15,7 +15,7 @@ pub fn test_render() {
 		'  foo':                         '<pre><code>foo</code></pre>'
 		"{v}='foo' \\\nfoo' \\\\\nbar'": ''
 	}
-	init()
+	initialize()
 	for k, v in testcases {
 		mut reader := iotext.new_reader(k)
 		mut writer := iotext.new_writer()
@@ -27,7 +27,7 @@ pub fn test_render() {
 }
 
 pub fn test_get_definition() {
-	init()
+	initialize()
 	mut def := get_definition('paragraph')!
 	assert def.open_tag == '<p>'
 	if _ := get_definition('MISSING') {
@@ -38,7 +38,7 @@ pub fn test_get_definition() {
 }
 
 pub fn test_set_definition() {
-	init()
+	initialize()
 	set_definition('indented', '<foo>|</foo>')
 	mut def := get_definition('indented')!
 	assert def.open_tag == '<foo>'

@@ -1,7 +1,7 @@
 module quotes
 
-pub fn test_init() {
-	init()
+pub fn test_initialize() {
+	initialize()
 	assert default_defs.len == defs.len
 	assert default_defs == defs
 	assert u64(&default_defs) != u64(&defs)
@@ -10,7 +10,7 @@ pub fn test_init() {
 /*
 Commented out because quotes.get_definition() raises a panic if the definition is not found.
 pub fn test_get_definition() {
-	init()
+	initialize()
 	get_definition('*')?
 	if _ := get_definition('MISSING') {
 		assert false, 'should have returned an error'
@@ -21,7 +21,7 @@ pub fn test_get_definition() {
 */
 
 pub fn test_set_definition() {
-	init()
+	initialize()
 
 	set_definition(Definition{
 		quote: '*'
@@ -57,7 +57,7 @@ pub fn test_set_definition() {
 }
 
 pub fn test_unescape() {
-	init()
+	initialize()
 	assert r'* ~~ \x' == unescape(r'\* \~~ \x')
 }
 

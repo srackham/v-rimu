@@ -1,7 +1,7 @@
 module macros
 
 pub fn test_values() {
-	init()
+	initialize()
 	assert macros_defs.len == 2
 	assert value('--')? == ''
 
