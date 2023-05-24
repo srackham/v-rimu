@@ -7,7 +7,7 @@ See https://discordapp.com/channels/592103645835821068/592294828432424960/934198
 
 [unsafe]
 fn private_get[T]() &T {
-	mut static s := &T(0)
+	mut static s := &T(unsafe { nil })
 	if u64(s) == 0 {
 		s = &T{}
 	}
