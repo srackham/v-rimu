@@ -33,49 +33,49 @@ const (
 		Definition{
 			mat: pcre2.must_compile(r'\\?<image:([^\s|]+)\|((?s).*?)>')
 			replacement: '<img src="$1" alt="$2">'
-		}
+		},
 		// Image: <image:src>
 		// src = $1, alt = $1
 		Definition{
 			mat: pcre2.must_compile(r'\\?<image:([^\s|]+?)>')
 			replacement: '<img src="$1" alt="$1">'
-		}
+		},
 		// Image: ![alt](url)
 		// alt = $1, url = $2
 		Definition{
 			mat: pcre2.must_compile(r'\\?!\[([^[]*?)]\((\S+?)\)')
 			replacement: '<img src="$2" alt="$1">'
-		}
+		},
 		// Email: <address|caption>
 		// address = $1, caption = $2
 		Definition{
 			mat: pcre2.must_compile(r'\\?<(\S+@[\w.\-]+)\|((?s).+?)>')
 			replacement: '<a href="mailto:$1">$$2</a>'
-		}
+		},
 		// Email: <address>
 		// address = $1, caption = $1
 		Definition{
 			mat: pcre2.must_compile(r'\\?<(\S+@[\w.\-]+)>')
 			replacement: '<a href="mailto:$1">$1</a>'
-		}
+		},
 		// Open link in new window: ^[caption](url)
 		// caption = $1, url = $2
 		Definition{
 			mat: pcre2.must_compile(r'\\?\^\[([^[]*?)]\((\S+?)\)')
 			replacement: '<a href="$2" target="_blank">$$1</a>'
-		}
+		},
 		// Link: [caption](url)
 		// caption = $1, url = $2
 		Definition{
 			mat: pcre2.must_compile(r'\\?\[([^[]*?)]\((\S+?)\)')
 			replacement: '<a href="$2">$$1</a>'
-		}
+		},
 		// Link: <url|caption>
 		// url = $1, caption = $2
 		Definition{
 			mat: pcre2.must_compile(r'\\?<(\S+?)\|((?s).*?)>')
 			replacement: '<a href="$1">$$2</a>'
-		}
+		},
 		// HTML inline tags.
 		// Match HTML comment or HTML tag.
 		// $1 = tag, $2 = tag name
@@ -85,18 +85,18 @@ const (
 			filter: fn (mat []string) string {
 				return options.html_safe_mode_filter(mat[1])
 			}
-		}
+		},
 		// Link: <url>
 		// url = $1
 		Definition{
 			mat: pcre2.must_compile(r'\\?<([^|\s]+?)>')
 			replacement: '<a href="$1">$1</a>'
-		}
+		},
 		// Auto-encode (most) raw HTTP URLs as links.
 		Definition{
 			mat: pcre2.must_compile(r'\\?((?:http|https):\/\/[^\s"\x27]*[A-Za-z0-9/#])')
 			replacement: '<a href="$1">$1</a>'
-		}
+		},
 		// Character entity.
 		Definition{
 			mat: pcre2.must_compile(r'\\?(&[\w#][\w]+;)')
@@ -104,12 +104,12 @@ const (
 			filter: fn (mat []string) string {
 				return mat[1]
 			}
-		}
+		},
 		// Line-break (space followed by \ at end of line).
 		Definition{
 			mat: pcre2.must_compile(r'[\\ ]\\(\n|$)')
 			replacement: '<br>$1'
-		}
+		},
 		// This hack ensures backslashes immediately preceding closing code quotes are rendered
 		// verbatim (Markdown behaviour).
 		// Works by finding escaped closing code quotes and replacing the backslash and the character

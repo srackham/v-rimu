@@ -57,7 +57,7 @@ const (
 			}
 			delimiter_filter: delimiter_text_filter
 			content_filter: macro_def_content_filter
-		}
+		},
 		// Multi-line macro expression value definition.
 		// DEPRECATED as of 11.0.0.
 		Definition{
@@ -71,7 +71,7 @@ const (
 			}
 			delimiter_filter: delimiter_text_filter
 			content_filter: macro_def_content_filter
-		}
+		},
 		// Comment block.
 		Definition{
 			name: 'comment'
@@ -83,7 +83,7 @@ const (
 				skip: true
 				specials: true
 			}
-		}
+		},
 		// Division block.
 		Definition{
 			name: 'division'
@@ -95,7 +95,7 @@ const (
 				specials: true
 			}
 			delimiter_filter: class_injection_filter
-		}
+		},
 		// Quote block.
 		Definition{
 			name: 'quote'
@@ -107,7 +107,7 @@ const (
 				specials: true
 			}
 			delimiter_filter: class_injection_filter
-		}
+		},
 		// Code block.
 		Definition{
 			name: 'code'
@@ -123,7 +123,7 @@ const (
 				return !(mat[1][0] == `-` && mat[2].trim_space() != '')
 			}
 			delimiter_filter: class_injection_filter
-		}
+		},
 		// HTML block.
 		Definition{
 			name: 'html'
@@ -149,7 +149,7 @@ const (
 			content_filter: fn (text string, _ []string, _ expansion.Options) string {
 				return options.html_safe_mode_filter(text)
 			}
-		}
+		},
 		// Indented paragraph.
 		Definition{
 			name: 'indented'
@@ -175,7 +175,7 @@ const (
 				}
 				return result.trim_string_right('\n')
 			}
-		}
+		},
 		// Quote paragraph.
 		Definition{
 			name: 'quote-paragraph'
@@ -199,7 +199,7 @@ const (
 				}
 				return result.trim_string_right('\n')
 			}
-		}
+		},
 		// Paragraph (lowest priority, cannot be escaped).
 		Definition{
 			name: 'paragraph'

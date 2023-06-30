@@ -44,7 +44,7 @@ const (
 			list_close_tag: '</ul>'
 			item_open_tag: '<li>'
 			item_close_tag: '</li>'
-		}
+		},
 		// Ordered lists.
 		// $1 is list ID $2 is item text.
 		Definition{
@@ -53,7 +53,7 @@ const (
 			list_close_tag: '</ol>'
 			item_open_tag: '<li>'
 			item_close_tag: '</li>'
-		}
+		},
 		// Definition lists.
 		// $1 is term, $2 is list ID, $3 is definition.
 		Definition{
