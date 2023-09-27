@@ -32,9 +32,9 @@ mut:
 	close_match      pcre2.Regex
 	open_tag         string
 	close_tag        string
-	verify           fn (matches []string) bool // Additional match verification checks.
-	delimiter_filter fn (matches []string, def &Definition) string // Process opening delimiter. Return any delimiter content.
-	content_filter   fn (text string, matches []string, opts expansion.Options) string
+	verify           fn (matches []string) bool = unsafe { nil } // Additional match verification checks.
+	delimiter_filter fn (matches []string, def &Definition) string = unsafe { nil } // Process opening delimiter. Return any delimiter content.
+	content_filter   fn (text string, matches []string, opts expansion.Options) string = unsafe { nil }
 	options          expansion.Options
 }
 

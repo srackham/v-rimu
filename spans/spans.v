@@ -163,7 +163,7 @@ fn pre_replacements(text string) string {
 fn post_replacements(text string) string {
 	return pcre2.must_compile(r'[\x{0000}\x{0001}]').replace_all_fn(text, fn (mat string) string {
 		mut frag := Fragment{}
-		frag, saved_replacements = saved_replacements[0], saved_replacements[1..] // Remove frag from start of list.
+		frag, saved_replacements = saved_replacements[0], saved_replacements[1..].clone() // Remove frag from start of list.
 		if mat == `\u0000`.str() {
 			return frag.text
 		} else {

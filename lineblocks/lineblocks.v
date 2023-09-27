@@ -20,8 +20,8 @@ mut:
 	mat         pcre2.Regex
 	replacement string
 	name        string // Optional unique identifier.
-	filter      LineBlockFilter
-	verify      LineBlockVerify // Additional match verification checks.
+	filter      LineBlockFilter = unsafe { nil }
+	verify      LineBlockVerify = unsafe { nil } // Additional match verification checks.
 }
 
 const defs = [

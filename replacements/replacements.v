@@ -7,7 +7,7 @@ pub struct Definition {
 pub mut:
 	mat         pcre2.Regex
 	replacement string
-	filter      fn (submatches []string) string
+	filter      fn (submatches []string) string = unsafe { nil }
 }
 
 fn (d1 Definition) == (d2 Definition) bool {
