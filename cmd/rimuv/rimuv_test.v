@@ -24,7 +24,8 @@ fn rimuv_cmd(args string, input string) string {
 	os.write_file(cmd_input, input) or { panic(err) }
 	$if windows {
 		mut cmd := 'type ${cmd_input} | bin\\rimuv.exe --no-rimurc ${args}'
-		cmd = 'cmd.exe /Q /C "${cmd}"'
+		// cmd = 'cmd.exe /Q /C "${cmd}"'
+		cmd = 'cmd.exe /C "${cmd}"'
 		return cmd
 	} $else {
 		cmd := 'cat ${cmd_input} | bin/rimuv --no-rimurc ${args}'
