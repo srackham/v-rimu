@@ -23,7 +23,7 @@ fn rimuv_cmd(args string, input string) string {
 	cmd_input := os.from_slash('./testdata/temp.txt')
 	os.write_file(cmd_input, input) or { panic(err) }
 	$if windows {
-		cmd := 'type ${cmd_input} | bin\\rimuv.exe --no-rimurc ${args}'
+		mut cmd := 'type ${cmd_input} | bin\\rimuv.exe --no-rimurc ${args}'
 		cmd = 'cmd.exe /Q /C "${cmd}"'
 		return cmd
 	} $else {
