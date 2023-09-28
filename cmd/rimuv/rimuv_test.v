@@ -19,15 +19,24 @@ mut:
 // Execute rimuc in command shell.
 // args: rimuc command args.
 // input: stdin input string.
-fn exec_rimuv(args string, input string) os.Result {
+fn rimuv_cmd(args string, input string) string {
 	cmd_input := os.from_slash('./testdata/temp.txt')
 	os.write_file(cmd_input, input) or { panic(err) }
 	$if windows {
 		cmd := 'type ${cmd_input} | bin\\rimuv.exe --no-rimurc ${args}'
-		res := os.execute('cmd.exe /Q /C "${cmd}"')
-		return os.Result{res.exit_code, str.normalize_newlines(res.output)}
+		cmd = 'cmd.exe /Q /C "${cmd}"'
+		return cmd
 	} $else {
 		cmd := 'cat ${cmd_input} | bin/rimuv --no-rimurc ${args}'
+		return cmd
+	}
+}
+
+fn rimuv_exec(cmd string) os.Result {
+	$if windows {
+		res := os.execute(cmd)
+		return os.Result{res.exit_code, str.normalize_newlines(res.output)}
+	} $else {
 		return os.execute(cmd)
 	}
 }
@@ -46,13 +55,15 @@ fn read_resource_test() {
 }
 
 fn test_help() {
-	res := exec_rimuv('-h', '')
+	cmd := rimuv_cmd('-h', '')
+	res := rimuv_exec(cmd)
 	assert res.exit_code == 0
 	assert res.output.starts_with('\nNAME')
 }
 
 fn test_illegal_layout() {
-	res := exec_rimuv('--layout foobar', '')
+	cmd := rimuv_cmd('--layout foobar', '')
+	res := rimuv_exec(cmd)
 	assert res.exit_code == 1
 	assert res.output.starts_with('external layouts not supported')
 }
@@ -85,9 +96,11 @@ fn test_rimuv() {
 			if layout != '' {
 				tc.args = ' --layout ${layout} ${tc.args}'
 			}
-			res := exec_rimuv(tc.args, tc.input)
-			assert res.exit_code == tc.exit_code, 'description: ${tc.description}\nexpected: ${tc.exit_code}\ngot: ${res.exit_code}'
-			msg := 'description: ${tc.description}\nexpected: ${str.to_literal(tc.expected_output)}\ngot: ${str.to_literal(res.output)}'
+			cmd := rimuv_cmd(tc.args, tc.input)
+			res := rimuv_exec(cmd)
+			mut msg := 'description: ${tc.description}\ncommand: ${cmd}\nexpected: ${tc.exit_code}\ngot: ${res.exit_code}'
+			assert res.exit_code == tc.exit_code, msg
+			msg = 'description: ${tc.description}\ncommand: ${cmd}\nexpected: ${str.to_literal(tc.expected_output)}\ngot: ${str.to_literal(res.output)}'
 			match tc.predicate {
 				'equals' {
 					assert res.output == tc.expected_output, msg
