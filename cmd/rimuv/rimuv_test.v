@@ -98,7 +98,7 @@ fn test_rimuv() {
 			}
 			cmd := rimuv_cmd(tc.args, tc.input)
 			res := rimuv_exec(cmd)
-			mut msg := 'description: ${tc.description}\ncommand: ${cmd}\nexpected: ${tc.exit_code}\ngot: ${res.exit_code}'
+			mut msg := 'description: ${tc.description}\ncommand: ${cmd}\nexpected: ${tc.exit_code}\ngot: ${res.exit_code}\noutput: ${res.output}'
 			assert res.exit_code == tc.exit_code, msg
 			msg = 'description: ${tc.description}\ncommand: ${cmd}\nexpected: ${str.to_literal(tc.expected_output)}\ngot: ${str.to_literal(res.output)}'
 			match tc.predicate {
