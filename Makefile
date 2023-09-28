@@ -9,7 +9,7 @@ SHELL := bash
 
 .PHONY: fmt test build-rimuv build-rimuv-optimized tag push
 
-test: fmt build-rimuv
+test: build-rimuv
 	v -enable-globals test .
 
 fmt:
@@ -25,9 +25,11 @@ build-rimuv-optimized:
 	v -enable-globals -prod -o bin/rimuv -prod cmd/rimuv/rimuv.v
 
 tag: test
+	v fmt -verify .
 	tag=$(VERS)
 	echo tag: $$tag
 	git tag -a -m "$$tag" "$$tag"
 
 push: test
+	v fmt -verify .
 	git push -u --tags origin master
