@@ -25,52 +25,50 @@ fn (q1 Definition) == (q2 Definition) bool {
 __global defs = []Definition{}
 // Mutable definitions initialized by DEFAULT_DEFS.
 
-const (
-	default_defs = [
-		Definition{
-			quote: '**'
-			open_tag: '<strong>'
-			close_tag: '</strong>'
-			spans: true
-		},
-		Definition{
-			quote: '*'
-			open_tag: '<em>'
-			close_tag: '</em>'
-			spans: true
-		},
-		Definition{
-			quote: '__'
-			open_tag: '<strong>'
-			close_tag: '</strong>'
-			spans: true
-		},
-		Definition{
-			quote: '_'
-			open_tag: '<em>'
-			close_tag: '</em>'
-			spans: true
-		},
-		Definition{
-			quote: '``'
-			open_tag: '<code>'
-			close_tag: '</code>'
-			spans: false
-		},
-		Definition{
-			quote: '`'
-			open_tag: '<code>'
-			close_tag: '</code>'
-			spans: false
-		},
-		Definition{
-			quote: '~~'
-			open_tag: '<del>'
-			close_tag: '</del>'
-			spans: true
-		},
-	]
-)
+const default_defs = [
+	Definition{
+		quote: '**'
+		open_tag: '<strong>'
+		close_tag: '</strong>'
+		spans: true
+	},
+	Definition{
+		quote: '*'
+		open_tag: '<em>'
+		close_tag: '</em>'
+		spans: true
+	},
+	Definition{
+		quote: '__'
+		open_tag: '<strong>'
+		close_tag: '</strong>'
+		spans: true
+	},
+	Definition{
+		quote: '_'
+		open_tag: '<em>'
+		close_tag: '</em>'
+		spans: true
+	},
+	Definition{
+		quote: '``'
+		open_tag: '<code>'
+		close_tag: '</code>'
+		spans: false
+	},
+	Definition{
+		quote: '`'
+		open_tag: '<code>'
+		close_tag: '</code>'
+		spans: false
+	},
+	Definition{
+		quote: '~~'
+		open_tag: '<del>'
+		close_tag: '</del>'
+		spans: true
+	},
+]
 
 // Reset definitions to defaults.
 pub fn initialize() {

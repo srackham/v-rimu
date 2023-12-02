@@ -4,19 +4,17 @@ import srackham.pcre2
 import options
 import spans
 
-pub const (
-	// Matches a line starting with a macro invocation. $1 = macro invocation.
-	match_line           = pcre2.must_compile(r'^({(?:[\w\-]+)(?:[!=|?](?:|.*?[^\\]))?}).*$')
-	// Match single-line macro definition. $1 = name, $2 = delimiter, $3 = value, $4 trailing delimiter.
-	line_def             = pcre2.must_compile(r'^\\?{([\w\-]+\x3f?)}\s*=\s*' + "(['`])" + '(.*)' +
-		"(['`])" + '$')
-	// Match multi-line macro definition literal value open delimiter. $1 is first line of macro.
-	literal_def_open     = pcre2.must_compile(r'^\\?{[\w\-]+\x3f?}\s*=\s*\x27(.*)$')
-	literal_def_close    = pcre2.must_compile(r'^(.*)\x27$')
-	// Match multi-line macro definition expression value open delimiter. $1 is first line of macro.
-	expression_def_open  = pcre2.must_compile(r'^\\?{[\w\-]+\x3f?}\s*=\s*' + '`' + '(.*)$')
-	expression_def_close = pcre2.must_compile(r'^(.*)`$')
-)
+// Matches a line starting with a macro invocation. $1 = macro invocation.
+pub const match_line = pcre2.must_compile(r'^({(?:[\w\-]+)(?:[!=|?](?:|.*?[^\\]))?}).*$')
+// Match single-line macro definition. $1 = name, $2 = delimiter, $3 = value, $4 trailing delimiter.
+pub const line_def = pcre2.must_compile(r'^\\?{([\w\-]+\x3f?)}\s*=\s*' + "(['`])" + '(.*)' +
+	"(['`])" + '$')
+// Match multi-line macro definition literal value open delimiter. $1 is first line of macro.
+pub const literal_def_open = pcre2.must_compile(r'^\\?{[\w\-]+\x3f?}\s*=\s*\x27(.*)$')
+pub const literal_def_close = pcre2.must_compile(r'^(.*)\x27$')
+// Match multi-line macro definition expression value open delimiter. $1 is first line of macro.
+pub const expression_def_open = pcre2.must_compile(r'^\\?{[\w\-]+\x3f?}\s*=\s*' + '`' + '(.*)$')
+pub const expression_def_close = pcre2.must_compile(r'^(.*)`$')
 
 struct Macro {
 mut:

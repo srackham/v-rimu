@@ -32,41 +32,40 @@ __global (
 	lists_ids = []string{}
 )
 
-const (
-	no_match = 'NO_MATCH' // "no matching list item found" list ID constant.
-	defs     = [
-		// Prefix match with backslash to allow escaping.
-		// Unordered lists.
-		// $1 is list ID $2 is item text.
-		Definition{
-			mat: pcre2.must_compile(r'^\\?\s*(-|\+|\*{1,4})\s+(.*)$')
-			list_open_tag: '<ul>'
-			list_close_tag: '</ul>'
-			item_open_tag: '<li>'
-			item_close_tag: '</li>'
-		},
-		// Ordered lists.
-		// $1 is list ID $2 is item text.
-		Definition{
-			mat: pcre2.must_compile(r'^\\?\s*(?:\d*)(\.{1,4})\s+(.*)$')
-			list_open_tag: '<ol>'
-			list_close_tag: '</ol>'
-			item_open_tag: '<li>'
-			item_close_tag: '</li>'
-		},
-		// Definition lists.
-		// $1 is term, $2 is list ID, $3 is definition.
-		Definition{
-			mat: pcre2.must_compile(r'^\\?\s*(.*[^:])(:{2,4})(|\s+.*)$')
-			list_open_tag: '<dl>'
-			list_close_tag: '</dl>'
-			item_open_tag: '<dd>'
-			item_close_tag: '</dd>'
-			term_open_tag: '<dt>'
-			term_close_tag: '</dt>'
-		},
-	]
-)
+const no_match = 'NO_MATCH' // "no matching list item found" list ID constant.
+
+const defs = [
+	// Prefix match with backslash to allow escaping.
+	// Unordered lists.
+	// $1 is list ID $2 is item text.
+	Definition{
+		mat: pcre2.must_compile(r'^\\?\s*(-|\+|\*{1,4})\s+(.*)$')
+		list_open_tag: '<ul>'
+		list_close_tag: '</ul>'
+		item_open_tag: '<li>'
+		item_close_tag: '</li>'
+	},
+	// Ordered lists.
+	// $1 is list ID $2 is item text.
+	Definition{
+		mat: pcre2.must_compile(r'^\\?\s*(?:\d*)(\.{1,4})\s+(.*)$')
+		list_open_tag: '<ol>'
+		list_close_tag: '</ol>'
+		item_open_tag: '<li>'
+		item_close_tag: '</li>'
+	},
+	// Definition lists.
+	// $1 is term, $2 is list ID, $3 is definition.
+	Definition{
+		mat: pcre2.must_compile(r'^\\?\s*(.*[^:])(:{2,4})(|\s+.*)$')
+		list_open_tag: '<dl>'
+		list_close_tag: '</dl>'
+		item_open_tag: '<dd>'
+		item_close_tag: '</dd>'
+		term_open_tag: '<dt>'
+		term_close_tag: '</dt>'
+	},
+]
 
 // noMatchItem returns "no matching list item found" constant.
 fn no_match_item() ItemInfo {

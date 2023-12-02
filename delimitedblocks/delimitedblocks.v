@@ -42,180 +42,178 @@ fn (d1 Definition) == (d2 Definition) bool {
 	return d1.name == d2.name
 }
 
-const (
-	default_defs = [
-		// Delimited blocks cannot be escaped with a backslash.
-		// Multi-line macro literal value definition.
-		Definition{
-			name: 'macro-definition'
-			open_match: macros.literal_def_open
-			close_match: macros.literal_def_close
-			open_tag: ''
-			close_tag: ''
-			options: expansion.Options{
-				macros: true
+const default_defs = [
+	// Delimited blocks cannot be escaped with a backslash.
+	// Multi-line macro literal value definition.
+	Definition{
+		name: 'macro-definition'
+		open_match: macros.literal_def_open
+		close_match: macros.literal_def_close
+		open_tag: ''
+		close_tag: ''
+		options: expansion.Options{
+			macros: true
+		}
+		delimiter_filter: delimiter_text_filter
+		content_filter: macro_def_content_filter
+	},
+	// Multi-line macro expression value definition.
+	// DEPRECATED as of 11.0.0.
+	Definition{
+		name: 'deprecated-macro-expression'
+		open_match: macros.expression_def_open
+		close_match: macros.expression_def_close
+		open_tag: ''
+		close_tag: ''
+		options: expansion.Options{
+			macros: true
+		}
+		delimiter_filter: delimiter_text_filter
+		content_filter: macro_def_content_filter
+	},
+	// Comment block.
+	Definition{
+		name: 'comment'
+		open_match: pcre2.must_compile(r'^\\?\/\*+$')
+		close_match: pcre2.must_compile(r'^\*+\/$')
+		open_tag: ''
+		close_tag: ''
+		options: expansion.Options{
+			skip: true
+			specials: true
+		}
+	},
+	// Division block.
+	Definition{
+		name: 'division'
+		open_match: pcre2.must_compile(r'^\\?(\.{2,})([\w\s-]*)$') // $1 is delimiter text, $2 is optional class names.
+		open_tag: '<div>'
+		close_tag: '</div>'
+		options: expansion.Options{
+			container: true
+			specials: true
+		}
+		delimiter_filter: class_injection_filter
+	},
+	// Quote block.
+	Definition{
+		name: 'quote'
+		open_match: pcre2.must_compile(r'^\\?("{2,}|>{2,})([\w\s-]*)$') // $1 is delimiter text, $2 is optional class names.
+		open_tag: '<blockquote>'
+		close_tag: '</blockquote>'
+		options: expansion.Options{
+			container: true
+			specials: true
+		}
+		delimiter_filter: class_injection_filter
+	},
+	// Code block.
+	Definition{
+		name: 'code'
+		open_match: pcre2.must_compile(r'^\\?(-{2,}|`{2,})([\w\s-]*)$') // $1 is delimiter text, $2 is optional class names.
+		open_tag: '<pre><code>'
+		close_tag: '</code></pre>'
+		options: expansion.Options{
+			macros: false
+			specials: true
+		}
+		verify: fn (mat []string) bool {
+			// The deprecated '-' delimiter does not support appended class names.
+			return !(mat[1][0] == `-` && mat[2].trim_space() != '')
+		}
+		delimiter_filter: class_injection_filter
+	},
+	// HTML block.
+	Definition{
+		name: 'html'
+		// Block starts with HTML comment, DOCTYPE directive or block-level HTML start or end tag.
+		// $1 is first line of block.
+		// $2 is the alphanumeric tag name.
+		open_match: pcre2.must_compile(r'(?i)^(<!--.*|<!DOCTYPE(?:\s.*)?|<\/?([a-z][a-z0-9]*)(?:[\s>].*)?)$')
+		close_match: pcre2.must_compile(r'^$')
+		open_tag: ''
+		close_tag: ''
+		options: expansion.Options{
+			macros: true
+		}
+		verify: fn (mat []string) bool {
+			// Return false if the HTML tag is an inline (non-block) HTML tag.
+			if mat[2] != '' {
+				return !match_inline_tag.is_match(mat[2])
+			} else {
+				return true // Matched HTML comment or doctype tag.
 			}
-			delimiter_filter: delimiter_text_filter
-			content_filter: macro_def_content_filter
-		},
-		// Multi-line macro expression value definition.
-		// DEPRECATED as of 11.0.0.
-		Definition{
-			name: 'deprecated-macro-expression'
-			open_match: macros.expression_def_open
-			close_match: macros.expression_def_close
-			open_tag: ''
-			close_tag: ''
-			options: expansion.Options{
-				macros: true
-			}
-			delimiter_filter: delimiter_text_filter
-			content_filter: macro_def_content_filter
-		},
-		// Comment block.
-		Definition{
-			name: 'comment'
-			open_match: pcre2.must_compile(r'^\\?\/\*+$')
-			close_match: pcre2.must_compile(r'^\*+\/$')
-			open_tag: ''
-			close_tag: ''
-			options: expansion.Options{
-				skip: true
-				specials: true
-			}
-		},
-		// Division block.
-		Definition{
-			name: 'division'
-			open_match: pcre2.must_compile(r'^\\?(\.{2,})([\w\s-]*)$') // $1 is delimiter text, $2 is optional class names.
-			open_tag: '<div>'
-			close_tag: '</div>'
-			options: expansion.Options{
-				container: true
-				specials: true
-			}
-			delimiter_filter: class_injection_filter
-		},
-		// Quote block.
-		Definition{
-			name: 'quote'
-			open_match: pcre2.must_compile(r'^\\?("{2,}|>{2,})([\w\s-]*)$') // $1 is delimiter text, $2 is optional class names.
-			open_tag: '<blockquote>'
-			close_tag: '</blockquote>'
-			options: expansion.Options{
-				container: true
-				specials: true
-			}
-			delimiter_filter: class_injection_filter
-		},
-		// Code block.
-		Definition{
-			name: 'code'
-			open_match: pcre2.must_compile(r'^\\?(-{2,}|`{2,})([\w\s-]*)$') // $1 is delimiter text, $2 is optional class names.
-			open_tag: '<pre><code>'
-			close_tag: '</code></pre>'
-			options: expansion.Options{
-				macros: false
-				specials: true
-			}
-			verify: fn (mat []string) bool {
-				// The deprecated '-' delimiter does not support appended class names.
-				return !(mat[1][0] == `-` && mat[2].trim_space() != '')
-			}
-			delimiter_filter: class_injection_filter
-		},
-		// HTML block.
-		Definition{
-			name: 'html'
-			// Block starts with HTML comment, DOCTYPE directive or block-level HTML start or end tag.
-			// $1 is first line of block.
-			// $2 is the alphanumeric tag name.
-			open_match: pcre2.must_compile(r'(?i)^(<!--.*|<!DOCTYPE(?:\s.*)?|<\/?([a-z][a-z0-9]*)(?:[\s>].*)?)$')
-			close_match: pcre2.must_compile(r'^$')
-			open_tag: ''
-			close_tag: ''
-			options: expansion.Options{
-				macros: true
-			}
-			verify: fn (mat []string) bool {
-				// Return false if the HTML tag is an inline (non-block) HTML tag.
-				if mat[2] != '' {
-					return !match_inline_tag.is_match(mat[2])
-				} else {
-					return true // Matched HTML comment or doctype tag.
+		}
+		delimiter_filter: delimiter_text_filter
+		content_filter: fn (text string, _ []string, _ expansion.Options) string {
+			return options.html_safe_mode_filter(text)
+		}
+	},
+	// Indented paragraph.
+	Definition{
+		name: 'indented'
+		open_match: pcre2.must_compile(r'^\\?(\s+\S.*)$')
+		close_match: pcre2.must_compile(r'^$')
+		open_tag: '<pre><code>'
+		close_tag: '</code></pre>'
+		options: expansion.Options{
+			specials: true
+		}
+		delimiter_filter: delimiter_text_filter
+		content_filter: fn (text string, _ []string, _ expansion.Options) string {
+			// Strip indent from start of each line.
+			first_indent := (pcre2.must_compile(r'\S').find_one_index(text) or { [] })[0]
+			mut result := ''
+			for line in text.split('\n') {
+				// Strip first line indent width or up to first non-space character.
+				mut indent := (pcre2.must_compile(r'\S|$').find_one_index(line) or { [] })[0]
+				if indent > first_indent {
+					indent = first_indent
 				}
+				result += line[indent..] + '\n'
 			}
-			delimiter_filter: delimiter_text_filter
-			content_filter: fn (text string, _ []string, _ expansion.Options) string {
-				return options.html_safe_mode_filter(text)
+			return result.trim_string_right('\n')
+		}
+	},
+	// Quote paragraph.
+	Definition{
+		name: 'quote-paragraph'
+		open_match: pcre2.must_compile(r'^\\?(>.*)$')
+		close_match: pcre2.must_compile(r'^$')
+		open_tag: '<blockquote><p>'
+		close_tag: '</p></blockquote>'
+		options: expansion.Options{
+			macros: true
+			spans: true
+			specials: true
+		}
+		delimiter_filter: delimiter_text_filter
+		content_filter: fn (text string, _ []string, _ expansion.Options) string {
+			// Strip leading > from start of each line and unescape escaped leading >.
+			mut result := ''
+			for mut line in text.split('\n') {
+				line = pcre2.must_compile(r'^>').replace_all(line, '')
+				line = pcre2.must_compile(r'^\\>').replace_all(line, '')
+				result = result + line + '\n'
 			}
-		},
-		// Indented paragraph.
-		Definition{
-			name: 'indented'
-			open_match: pcre2.must_compile(r'^\\?(\s+\S.*)$')
-			close_match: pcre2.must_compile(r'^$')
-			open_tag: '<pre><code>'
-			close_tag: '</code></pre>'
-			options: expansion.Options{
-				specials: true
-			}
-			delimiter_filter: delimiter_text_filter
-			content_filter: fn (text string, _ []string, _ expansion.Options) string {
-				// Strip indent from start of each line.
-				first_indent := (pcre2.must_compile(r'\S').find_one_index(text) or { [] })[0]
-				mut result := ''
-				for line in text.split('\n') {
-					// Strip first line indent width or up to first non-space character.
-					mut indent := (pcre2.must_compile(r'\S|$').find_one_index(line) or { [] })[0]
-					if indent > first_indent {
-						indent = first_indent
-					}
-					result += line[indent..] + '\n'
-				}
-				return result.trim_string_right('\n')
-			}
-		},
-		// Quote paragraph.
-		Definition{
-			name: 'quote-paragraph'
-			open_match: pcre2.must_compile(r'^\\?(>.*)$')
-			close_match: pcre2.must_compile(r'^$')
-			open_tag: '<blockquote><p>'
-			close_tag: '</p></blockquote>'
-			options: expansion.Options{
-				macros: true
-				spans: true
-				specials: true
-			}
-			delimiter_filter: delimiter_text_filter
-			content_filter: fn (text string, _ []string, _ expansion.Options) string {
-				// Strip leading > from start of each line and unescape escaped leading >.
-				mut result := ''
-				for mut line in text.split('\n') {
-					line = pcre2.must_compile(r'^>').replace_all(line, '')
-					line = pcre2.must_compile(r'^\\>').replace_all(line, '')
-					result = result + line + '\n'
-				}
-				return result.trim_string_right('\n')
-			}
-		},
-		// Paragraph (lowest priority, cannot be escaped).
-		Definition{
-			name: 'paragraph'
-			open_match: pcre2.must_compile(r'(.*)')
-			close_match: pcre2.must_compile(r'^$')
-			open_tag: '<p>'
-			close_tag: '</p>'
-			options: expansion.Options{
-				macros: true
-				spans: true
-				specials: true
-			}
-			delimiter_filter: delimiter_text_filter
-		},
-	]
-)
+			return result.trim_string_right('\n')
+		}
+	},
+	// Paragraph (lowest priority, cannot be escaped).
+	Definition{
+		name: 'paragraph'
+		open_match: pcre2.must_compile(r'(.*)')
+		close_match: pcre2.must_compile(r'^$')
+		open_tag: '<p>'
+		close_tag: '</p>'
+		options: expansion.Options{
+			macros: true
+			spans: true
+			specials: true
+		}
+		delimiter_filter: delimiter_text_filter
+	},
+]
 
 // Reset definitions to defaults.
 pub fn initialize() {

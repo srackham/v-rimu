@@ -10,12 +10,10 @@ __global (
 	callback         CallbackFunction
 )
 
-const (
-	// Pseudo nil option values (values that are assumed invalid).
-	nil_html_replacement = 'ad17a6bf-5c92-4a16-8e6e-ab5622f2a2be'
-	nil_safe_mode        = 2847238
-	nil_callback         = CallbackFunction(0)
-)
+// Pseudo nil option values (values that are assumed invalid).
+const nil_html_replacement = 'ad17a6bf-5c92-4a16-8e6e-ab5622f2a2be'
+const nil_safe_mode = 2847238
+const nil_callback = CallbackFunction(0)
 
 pub struct CallbackMessage {
 pub:
