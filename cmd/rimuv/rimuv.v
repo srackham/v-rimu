@@ -21,7 +21,7 @@ fn rimurc_path() string {
 }
 
 // Helpers.
-[noreturn]
+@[noreturn]
 fn die(message string) {
 	if message != '' {
 		eprintln(message)
@@ -65,7 +65,7 @@ fn shift[T](mut a []T, err_msg string) T {
 	return res
 }
 
-[noreturn]
+@[noreturn]
 fn main() {
 	mut args := os.args.clone()
 	shift(mut args, '')
